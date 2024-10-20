@@ -10,7 +10,7 @@
 <?php
    $host = "localhost";
    $usr = "root";
-   $pwd = "Tnv!Fl#8lS65";
+   $pwd = "220203vinx";
    $db = "shop";
 
     $conn = mysqli_connect($host,$usr,$pwd) or die ("เชื่อมต่อฐานข้อมูลไม่ได้");
