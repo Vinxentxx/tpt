@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 10:40 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Oct 21, 2024 at 01:53 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,8 +45,8 @@ INSERT INTO `customer` (`cr_id`, `cr_name`, `cr_last`, `cr_tel`, `cr_add`, `cr_m
 (5, 'ชลธิชา', 'เอี่ยมละออ', 931569184, '165ihyufjihuydsgg', 'cugyugf7reb@gmail.com'),
 (6, 'วริษา', 'พูลพุทธ', 933757311, '165ihyufjihuydsgg', 'cugyugf7reb@gmail.com'),
 (7, 'วริษา', 'พูลพุทธ', 931569184, '165ihyufjihuydsgg', 'cugyugf7reb@gmail.com'),
-(8, 'หนหวย', 'gihusdg25', 231456987, 'jgh87scy7ewfg', 'gcjxgfeo@gmail.com'),
-(9, 'ชลธิชา', 'เอี่ยมละออ', 933757311, '125663254', '6528uhyfsuygfyu@gmail.com');
+(9, 'ชลธิชา', 'เอี่ยมละออ', 933757311, '125663254', '6528uhyfsuygfyu@gmail.com'),
+(10, 'tood', 'dam', 98, '1111', 'ss@s');
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,8 @@ INSERT INTO `user` (`cr_id`, `u_user`, `u_password`) VALUES
 (6, '123456789', '$2y$10$oG9nv45ZCY4efanyxWkO9.ahpjol32ygI3VrN5HrWcIAO5twuFO3C'),
 (7, '123456', '$2y$10$w/Osp8nGUJw.Np/vO3NCz.T5FO90eU.rI.DgpC8w.h2CBNbe1DXJ6'),
 (8, '123456', '$2y$10$BsjRbiCZbg4fFOUQiTD/WOH4fqlweD.8RK6.o0VGyXwpMD9BZw5gO'),
-(9, 'name', '$2y$10$bVBEV0cN/7dFhtvB9IqokOv/zTSAodsx7YRugh8haT2pXZUG8KIoi');
+(9, 'name', '$2y$10$bVBEV0cN/7dFhtvB9IqokOv/zTSAodsx7YRugh8haT2pXZUG8KIoi'),
+(10, 'Sixnature', '$2y$10$gp8MV0vzSrVbzvDSm2rYAuDxGit9dvBYRFDAOqzPD6EX3.8nuZFTW');
 
 --
 -- Indexes for dumped tables
@@ -96,13 +97,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `cr_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cr_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `cr_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cr_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
