@@ -126,7 +126,7 @@ if (isset($_SESSION['cart'])) {
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="index1.php">Product</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.php">none</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.php">Suport</a></li>
             </ul>
             <form class="d-flex" action="" method="get" style="align-items: center;">
                 <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?= htmlspecialchars($searchQuery) ?>">
