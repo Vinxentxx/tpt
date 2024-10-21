@@ -1,0 +1,31 @@
+<?php
+$host = 'localhost';
+$username = 'root'; // ชื่อผู้ใช้
+$password = 'vinx220203'; // รหัสผ่าน (ถ้าว่างให้ใช้ '')
+$dbname = 'discountcode'; // ชื่อฐานข้อมูลที่คุณต้องการใช้
+
+// สร้างการเชื่อมต่อ
+$conn = new mysqli($host, $username, $password, $dbname);
+
+// ตรวจสอบการเชื่อมต่อ
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// ตรวจสอบว่าฐานข้อมูลมีอยู่หรือไม่
+$sql = "SHOW TABLES LIKE 'code'";
+$result = $conn->query($sql);
+
+if ($result->num_rows == 0) {
+    // สร้างตารางถ้ายังไม่มี
+    $createTableSQL = "CREATE TABLE code (
+        code_name VARCHAR(50) PRIMARY KEY,
+        code_price DECIMAL(10, 2)
+    )";
+    if ($conn->query($createTableSQL) === TRUE) {
+        echo "Table 'code' created successfully.";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+}
+?>
