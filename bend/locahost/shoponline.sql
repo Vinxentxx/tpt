@@ -31,14 +31,14 @@ CREATE TABLE `orders` (
   `oid` int(7) UNSIGNED ZEROFILL NOT NULL,
   `ototal` int(7) NOT NULL,
   `odate` datetime NOT NULL,
-  `member_id` int(7) NOT NULL
+  `cr_id` int(7) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`oid`, `ototal`, `odate`, `member_id`) VALUES
+INSERT INTO `orders` (`oid`, `ototal`, `odate`, `cr_id`) VALUES
 (0000007, 4560, '2024-10-15 18:58:24', 0);
 
 -- --------------------------------------------------------
