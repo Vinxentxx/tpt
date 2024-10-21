@@ -9,10 +9,12 @@ foreach($_SESSION['sid'] as $pid) {
     $total += $sum[$pid];
 }
 
-// เพิ่ม member_id ในคำสั่ง SQL
-$cr_id = isset($_SESSION['cr_id']) ? $_SESSION['cr_id'] : null; // ตรวจสอบค่า member_id
+// ตรวจสอบค่าของ member_id และ cr_id
+$member_id = isset($_SESSION['member_id']) ? $_SESSION['member_id'] : null; 
+$cr_id = isset($_SESSION['cr_id']) ? $_SESSION['cr_id'] : null; 
 
-$sql = "INSERT INTO `orders` (odate, ototal, cr_id) VALUES (CURRENT_TIMESTAMP, '$total', '$cr_id');";
+// สร้างคำสั่ง SQL
+$sql = "INSERT INTO `orders` (odate, ototal, member_id, cr_id) VALUES (CURRENT_TIMESTAMP, '$total', '$member_id', ". ($cr_id ? "'$cr_id'" : "NULL") .");";
 mysqli_query($conn, $sql) or die ("insert error: " . mysqli_error($conn));
 $id = mysqli_insert_id($conn);
 
