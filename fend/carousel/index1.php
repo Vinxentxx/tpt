@@ -243,7 +243,7 @@ $rs2 = mysqli_query($conn, $sql2);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                alert('เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว!');
+                // ไม่แสดงข้อความยืนยัน
                 location.reload(); // อัปเดตจำนวนสินค้าในตะกร้า
             }
         };
