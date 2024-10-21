@@ -29,3 +29,5 @@ foreach($_SESSION['sid'] as $pid) {
 
 echo "<meta http-equiv=\"refresh\" content=\"0;URL=order.php\">";
 ?>
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
