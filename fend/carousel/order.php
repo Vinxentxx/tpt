@@ -92,10 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .total-row {
             font-weight: bold;
         }
+        .total-row-discount {
+            font-weight: bold;
+            color: #dc3545; /* สีแดงสำหรับคำว่า "ส่วนลด" */
+        }
         .empty-cart-message {
             text-align: center;
             color: #dc3545;
             font-weight: bold;
+        }
+        .btn-submit-payment {
+            text-align: left;
         }
     </style> 
 </head>
@@ -132,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <td><strong><?php echo number_format($total, 0); ?> บาท</strong></td>
                     </tr>
                     <?php if ($discount_price > 0): ?>
-                    <tr class="total-row">
+                    <tr class="total-row total-row-discount">
                         <td colspan="3" class="text-right"><strong>ส่วนลด</strong></td>
                         <td><strong>- <?php echo number_format($discount_price, 0); ?> บาท</strong></td>
                     </tr>
@@ -147,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="empty-cart-message">ไม่มีสินค้าที่เลือกในตะกร้า</p>
             <?php endif; ?>
             
-            <div class="card-body">
+            <div class="card-body btn-submit-payment">
                 <form method="POST" action="">
                     <div class="mb-3">
                         <select class="form-select" name="payment_method" id="payment_method" required>
@@ -159,27 +166,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
-
-                <?php if (isset($paymentMethod)): ?>
-                    <div class="mt-5 payment-info">
-                        <?php if ($paymentMethod === 'qr'): ?>
-                            <h2>คิวอาร์โค้ดสำหรับการชำระเงิน</h2>
-                            <p>สแกนคิวอาร์โค้ดเพื่อทำการชำระเงิน:</p>
-                            <img src="qrcode.png" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
-                            <form method="POST" action="view_order.php">
-                                <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
-                                <button type="submit" class="btn btn-success">ชำระเสร็จสิ้น</button>
-                            </form>
-                        <?php elseif ($paymentMethod === 'cod'): ?>
-                            <h2>เก็บปลายทาง</h2>
-                            <p>สินค้าจะถูกส่งถึงคุณและชำระเงินเมื่อได้รับสินค้า</p>
-                        <?php endif; ?>
-                        <?php if ($orderId): ?>
-                            <p>หมายเลขออเดอร์: <strong><?php echo $orderId; ?></strong></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
             </div>
+
+            <?php if (isset($paymentMethod)): ?>
+                <div class="mt-5 payment-info">
+                    <?php if ($paymentMethod === 'qr'): ?>
+                        <h2>คิวอาร์โค้ดสำหรับการชำระเงิน</h2>
+                        <p>สแกนคิวอาร์โค้ดเพื่อทำการชำระเงิน:</p>
+                        <img src="qrcode.png" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
+                        <form method="POST" action="view_order.php">
+                            <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
+                            <button type="submit" class="btn btn-success">ชำระเสร็จสิ้น</button>
+                        </form>
+                    <?php elseif ($paymentMethod === 'cod'): ?>
+                        <h2>เก็บปลายทาง</h2>
+                        <p>สินค้าจะถูกส่งถึงคุณและชำระเงินเมื่อได้รับสินค้า</p>
+                    <?php endif; ?>
+                    <?php if ($orderId): ?>
+                        <p>หมายเลขออเดอร์: <strong><?php echo $orderId; ?></strong></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

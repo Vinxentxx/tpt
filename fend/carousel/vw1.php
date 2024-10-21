@@ -1,3 +1,16 @@
+<?php
+session_start(); // เริ่ม session ทันทีที่เริ่มต้นไฟล์
+
+include("connectdb.php");
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "shoponline";
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die("เชื่อมต่อฐานข้อมูลไม่ได้");
+mysqli_query($conn, "SET NAMES 'utf8'");
+$pt = isset($_GET['c_id']) ? $_GET['c_id'] : null;
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -100,16 +113,6 @@
     <h1>ข้อมูลประเภทสินค้า</h1>
     <div class="row">
 <?php
-session_start(); // เริ่ม session หากยังไม่ได้เริ่ม
-
-$servername = "localhost";
-$username = "root";
-$password = "vinx220203";
-$dbname = "shoponline";
-$conn = mysqli_connect($servername, $username, $password, $dbname) or die("เชื่อมต่อฐานข้อมูลไม่ได้");
-mysqli_query($conn, "SET NAMES 'utf8'");
-$pt = isset($_GET['c_id']) ? $_GET['c_id'] : null;
-
 if ($pt !== null) {
     $sql = "SELECT * FROM product WHERE c_id = '$pt'";
     $rs = mysqli_query($conn, $sql);

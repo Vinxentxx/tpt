@@ -1,11 +1,11 @@
 <?php
 $host = 'localhost';
 $dbname = 'messaging_system';
-$username = 'root'; // หรือชื่อผู้ใช้ใหม่ของคุณ
-$password = 'vinx220203'; // รหัสผ่าน (ถ้าว่างให้ใช้ '') 
+$username = 'root'; // ชื่อผู้ใช้ที่ถูกต้อง
+$password = ''; // รหัสผ่านที่ถูกต้อง (ว่าง)
 
 // สร้างการเชื่อมต่อ
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $dbname); // ใช้ $host แทน $servername
 
 // ตรวจสอบการเชื่อมต่อ
 if ($conn->connect_error) {

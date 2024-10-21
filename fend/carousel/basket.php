@@ -40,6 +40,7 @@ if (isset($_GET['remove'])) {
 // ตัวแปรสำหรับส่วนลด
 $discount_code = '';
 $discount_price = 0;
+$flash_message = ''; // ตัวแปรสำหรับแสดง Flash Message
 
 // ตรวจสอบการใช้โค้ดส่วนลด
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_discount'])) {
@@ -55,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_discount'])) {
                 $row_discount = mysqli_fetch_assoc($result_discount);
                 $discount_price = $row_discount['code_price'];
                 $_SESSION['discount_price'] = $discount_price; // เก็บส่วนลดใน session
-                echo "<p class='text-success'>ใช้โค้ดส่วนลดสำเร็จ: ลดไป " . number_format($discount_price, 2) . " บาท</p>";
+                $flash_message = "ใช้โค้ดส่วนลดสำเร็จ: ลดไป " . number_format($discount_price, 2) . " บาท"; // ข้อความแสดง Flash Message
             } else {
-                echo "<p class='text-danger'>โค้ดส่วนลดไม่ถูกต้อง</p>";
+                $flash_message = "โค้ดส่วนลดไม่ถูกต้อง";
             }
         } else {
-            echo "<p class='text-danger'>เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " . mysqli_error($conn) . "</p>";
+            $flash_message = "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " . mysqli_error($conn);
         }
     }
 }
@@ -116,6 +117,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_discount'])) {
         .total-row {
             background-color: #ffe6e6; /* ชมพูอ่อน */
             font-weight: bold;
+        }
+        .alert-flash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
         }
     </style>
 </head>
@@ -198,9 +207,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_discount'])) {
             </div>
         </div>
     </form>
+
+    <!-- Flash Message -->
+    <div class="alert alert-success alert-flash" id="flashMessage"><?= $flash_message ?></div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="bootstrap.js"></script>
+<script>
+    $(document).ready(function(){
+        var flashMessage = '<?= $flash_message ?>';
+        if(flashMessage !== '') {
+            $('#flashMessage').fadeIn().delay(3000).fadeOut();
+        }
+    });
+</script>
+
 </body>
 </html>

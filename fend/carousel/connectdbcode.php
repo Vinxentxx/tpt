@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root"; // หรือชื่อผู้ใช้ของคุณ
-$password = "vinx220203"; // รหัสผ่านของคุณ
+$password = ""; // รหัสผ่านของคุณ
 $dbname = "discountcode"; // ชื่อฐานข้อมูลที่คุณต้องการเชื่อมต่อ
 
 // สร้างการเชื่อมต่อ

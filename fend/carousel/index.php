@@ -41,12 +41,6 @@ if (isset($_SESSION['cart'])) {
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        .carousel-inner img {
-    height: 800px; /* กำหนดความสูงที่ต้องการ */
-    object-fit: cover; /* ปรับรูปภาพให้เต็มพื้นที่โดยไม่เสียอัตราส่วน */
-    width: 100%; /* ให้กว้างเต็มพื้นที่ */
-}
-
         body {
             background-color: #f8f9fa;
             font-family: 'Mali', sans-serif;
@@ -114,6 +108,10 @@ if (isset($_SESSION['cart'])) {
             align-items: center;
             min-height: calc(100% - 1rem); /* Adjust for some margin */
         }
+        .icon-logout {
+            font-size: 2rem; /* ขนาดไอคอน Logout */
+            color: white; /* สีของไอคอน Logout */
+        }
     </style>
 </head>
 <body>
@@ -128,7 +126,7 @@ if (isset($_SESSION['cart'])) {
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="index1.php">Product</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.php">Support</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.php">none</a></li>
             </ul>
             <form class="d-flex" action="" method="get" style="align-items: center;">
                 <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?= htmlspecialchars($searchQuery) ?>">
@@ -140,7 +138,9 @@ if (isset($_SESSION['cart'])) {
                         <i class="bi bi-person-circle"></i>
                         <?= htmlspecialchars($_SESSION['username']) ?>
                     </a>
-                    <a href="#" class="btn btn-custom" onclick="confirmLogout(event)">Logout</a>
+                    <a href="#" class="icon-logout" onclick="confirmLogout(event)">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
                 <?php else: ?>
                     <a href="login.php" class="btn btn-custom">Login</a>
                 <?php endif; ?>
@@ -155,7 +155,6 @@ if (isset($_SESSION['cart'])) {
     </div>
 </nav>
 </header>
-
 
 <main>
 <!-- Modal for Logout Confirmation -->
@@ -174,23 +173,22 @@ if (isset($_SESSION['cart'])) {
   </div>
 </div>
 
-
 <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <a href="vw.php?pt_id=2">
-                <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-5-768x768.png" class="d-block w-100">
+                <img src="https://prod-global-static.oss-us-east-1.aliyuncs.com/globalAdmin/1719177703877____download-4____.jpg?x-oss-process=image/format,webp" class="d-block w-100">
             </a>
             <div class="carousel-caption text-start">
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-6-768x768.png" class="d-block w-100">
+            <img src="https://prod-global-static.oss-us-east-1.aliyuncs.com/globalAdmin/1719177707770____download-5____.jpg?x-oss-process=image/format,webp" class="d-block w-100">
             <div class="carousel-caption">   
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-9-768x768.png" class="d-block w-100">
+            <img src="https://fado.vn/blog/wp-content/uploads/2023/05/4-diem-an-tuong-cua-mo-hinh-Skullpanda.jpg" class="d-block w-100">
             <div class="carousel-caption text-end"> 
             </div>
         </div>
@@ -209,39 +207,41 @@ if (isset($_SESSION['cart'])) {
     <h1 class="text-center" style="color: darkred;">เเนะนำ</h1>
     <div class="row">
         <div class="col-lg-4 mb-4">
-            <div class="card">
+            <div class="card h-100 d-flex flex-column">
                 <img src="https://prod-eurasian-res.popmart.com/default/1_X8ltv4qiy2_1200x1200.jpg" class="card-img-top rounded-image">
-                <div class="card-body">
+                <div class="card-body flex-grow-1">
                     <h5 class="card-title">SKULLPANDA</h5>
                     <p class="card-text">Skullpanda อาร์ตทอยจากศิลปิน Xiongmao ตัวอิตอันดับต้นๆ ของอาร์ตทอยด้วยความน่ารักในแบบเด็กผู้หญิง</p>
-                    <a href="vw.php?pt_id=2" class="btn btn-secondary" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
+                    <a href="vw.php?pt_id=2" class="btn btn-secondary mt-auto" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 mb-4">
-            <div class="card">
+            <div class="card h-100 d-flex flex-column">
                 <img src="https://prod-thailand-res.popmart.com/default/20240731_171817_505119____1_____1200x1200.jpg" class="card-img-top rounded-image">
-                <div class="card-body">
+                <div class="card-body flex-grow-1">
                     <h5 class="card-title">MOLLY</h5>
                     <p class="card-text">น้องมอลลี่คือเด็กผู้หญิงสุดน่ารักจากคุณ Kenny Wong ศิลปินชาวฮ่องกง</p>
-                    <a href="vw.php?pt_id=5" class="btn btn-secondary" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
+                    <a href="vw.php?pt_id=5" class="btn btn-secondary mt-auto" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 mb-4">
-            <div class="card">
+            <div class="card h-100 d-flex flex-column">
                 <img src="https://prod-thailand-res.popmart.com/default/20240924_095748_398503____1_____1200x1200.jpg" class="card-img-top rounded-image">
-                <div class="card-body">
+                <div class="card-body flex-grow-1">
                     <h5 class="card-title">CRYBABY</h5>
                     <p class="card-text">Crybaby เป็นอาร์ตทอยที่สื่อถึงความรู้สึกของเด็กผู้หญิงที่รองไห</p>
-                    <a href="vw.php?pt_id=1" class="btn btn-secondary" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
+                    <a href="vw.php?pt_id=1" class="btn btn-secondary mt-auto" style="background-color: #dc3545; border-color: #f1b0b7;">View details &raquo;</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <hr class="featurette-divider">
+<hr class="featurette-divider">
 
+<div class="container marketing my-5">
     <div class="row featurette">
         <div class="col-md-7">
             <h2 class="featurette-heading">Single Box</h2>
@@ -251,7 +251,7 @@ if (isset($_SESSION['cart'])) {
             </p>
         </div>
         <div class="col-md-5">
-            <img src="https://prod-thailand-res.popmart.com/default/20240625_101713_899251____8_____1200x1200.jpg" class="featurette-image img-fluid mx-auto rounded-image" width="500">
+            <img src="https://prod-thailand-res.popmart.com/default/20240625_101713_899251____8_____1200x1200.jpg" class="featurette-image img-fluid mx-auto rounded-image" style="max-height: 400px; width: auto; object-fit: contain;">
         </div>
     </div>
 
@@ -266,7 +266,7 @@ if (isset($_SESSION['cart'])) {
             </p>
         </div>
         <div class="col-md-5 order-md-1">
-            <img src="https://prod-thailand-res.popmart.com/default/20240715_095521_842985_________1200x1200.jpg" class="rounded-image" width="500">
+            <img src="https://prod-thailand-res.popmart.com/default/20240715_095521_842985_________1200x1200.jpg" class="rounded-image" style="max-height: 400px; width: auto; object-fit: contain;">
         </div>
     </div>
 
@@ -281,12 +281,11 @@ if (isset($_SESSION['cart'])) {
             </p>
         </div>
         <div class="col-md-5">
-            <img src="https://prod-thailand-res.popmart.com/default/20240702_165447_886235____4_____1200x1200.jpg" class="rounded-image" width="500">
+            <img src="https://prod-thailand-res.popmart.com/default/20240702_165447_886235____4_____1200x1200.jpg" class="rounded-image" style="max-height: 400px; width: auto; object-fit: contain;">
         </div>
     </div>
     <hr class="featurette-divider">
 </div>
-</main>
 
 <footer class="text-center text-lg-start mt-5">
     <div class="container p-4">

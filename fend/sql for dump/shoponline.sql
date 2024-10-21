@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 10:40 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Oct 21, 2024 at 07:13 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,52 +18,109 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `shop`
+-- Database: `shoponline`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE `admin` (
-  `a_id` int(7) NOT NULL,
-  `a_name` varchar(250) NOT NULL,
-  `a_username` varchar(250) NOT NULL,
-  `a_password` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `orders` (
+  `oid` int(7) UNSIGNED ZEROFILL NOT NULL,
+  `ototal` int(7) NOT NULL,
+  `odate` datetime NOT NULL,
+  `member_id` int(7) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `orders`
 --
 
-INSERT INTO `admin` (`a_id`, `a_name`, `a_username`, `a_password`) VALUES
-(1, 'ชลธิชา เอี่ยมละออ', 'admin1', '81dc9bdb52d04dc20036dbd8313ed055'),
-(2, 'เกียรติศักดิ์ มูลบัวภา', 'admin2', '81dc9bdb52d04dc20036dbd8313ed055'),
-(3, 'วริษา พูลพุทธ', 'admin3', '81dc9bdb52d04dc20036dbd8313ed055'),
-(4, 'นิรันดร ศรีสวัสดิ์', 'admin4', '81dc9bdb52d04dc20036dbd8313ed055');
+INSERT INTO `orders` (`oid`, `ototal`, `odate`, `member_id`) VALUES
+(0000007, 4560, '2024-10-15 18:58:24', 0),
+(0000008, 30780, '2024-10-19 14:48:42', 0),
+(0000009, 35340, '2024-10-19 14:48:48', 0),
+(0000010, 9880, '2024-10-19 14:59:04', 0),
+(0000011, 64560, '2024-10-20 21:12:21', 0),
+(0000012, 54960, '2024-10-21 02:09:01', 0),
+(0000013, 54960, '2024-10-21 02:30:44', 0),
+(0000014, 74160, '2024-10-21 02:52:17', 0),
+(0000015, 74160, '2024-10-21 02:55:18', 0),
+(0000016, 92400, '2024-10-21 02:58:24', 0),
+(0000017, 92400, '2024-10-21 02:59:53', 0),
+(0000018, 122280, '2024-10-21 03:01:09', 0),
+(0000019, 22800, '2024-10-21 10:07:43', 0),
+(0000020, 69120, '2024-10-21 10:28:32', 0),
+(0000021, 105600, '2024-10-21 10:28:58', 0),
+(0000022, 119280, '2024-10-21 10:34:02', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Table structure for table `orders_detail`
 --
 
-CREATE TABLE `category` (
-  `c_id` int(7) NOT NULL,
-  `c_name` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `orders_detail` (
+  `od_id` int(6) NOT NULL,
+  `oid` int(7) UNSIGNED ZEROFILL NOT NULL,
+  `pid` int(7) NOT NULL,
+  `item` int(7) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `category`
+-- Dumping data for table `orders_detail`
 --
 
-INSERT INTO `category` (`c_id`, `c_name`) VALUES
-(1, 'Box Set'),
-(2, 'Single Box'),
-(3, '1000persen'),
-(4, '400persen');
+INSERT INTO `orders_detail` (`od_id`, `oid`, `pid`, `item`) VALUES
+(16, 0000007, 2, 1),
+(17, 0000008, 6, 1),
+(18, 0000008, 7, 1),
+(19, 0000008, 8, 1),
+(20, 0000008, 9, 1),
+(21, 0000008, 2, 3),
+(22, 0000009, 6, 1),
+(23, 0000009, 7, 1),
+(24, 0000009, 8, 1),
+(25, 0000009, 9, 1),
+(26, 0000009, 2, 4),
+(27, 0000010, 37, 1),
+(28, 0000010, 40, 1),
+(29, 0000010, 69, 1),
+(30, 0000010, 96, 1),
+(31, 0000011, 49, 1),
+(32, 0000011, 50, 1),
+(33, 0000011, 62, 1),
+(34, 0000011, 99, 1),
+(35, 0000012, 3, 6),
+(36, 0000012, 1, 7),
+(37, 0000013, 3, 6),
+(38, 0000013, 1, 7),
+(39, 0000014, 3, 11),
+(40, 0000014, 1, 7),
+(41, 0000015, 3, 11),
+(42, 0000015, 1, 7),
+(43, 0000016, 3, 11),
+(44, 0000016, 1, 7),
+(45, 0000016, 2, 4),
+(46, 0000017, 3, 11),
+(47, 0000017, 1, 7),
+(48, 0000017, 2, 4),
+(49, 0000018, 3, 11),
+(50, 0000018, 1, 8),
+(51, 0000018, 2, 4),
+(52, 0000018, 12, 2),
+(53, 0000018, 11, 1),
+(54, 0000018, 10, 1),
+(55, 0000018, 16, 1),
+(56, 0000018, 15, 1),
+(57, 0000019, 1, 5),
+(58, 0000020, 3, 18),
+(59, 0000021, 3, 18),
+(60, 0000021, 2, 8),
+(61, 0000022, 3, 18),
+(62, 0000022, 2, 11);
 
 -- --------------------------------------------------------
 
@@ -78,14 +135,14 @@ CREATE TABLE `product` (
   `p_detail` text NOT NULL,
   `p_price` float(9,2) NOT NULL,
   `p_ext` varchar(250) NOT NULL,
-  `t_id` int(7) NOT NULL
+  `pt_id` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`, `t_id`) VALUES
+INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`, `pt_id`) VALUES
 (1, 1, 'CRYBABY × Powerpuff Girls Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 6-9  เซนติเมตร\r\nส่วนประกอบ: PVC/ABS\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสลุ้นรับรางวัลที่ซ่อนอยู่', 4560.00, 'jpg', 1),
 (1, 2, 'SKULLPANDA The Sound Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 7-11 เซนติเมตร\r\nส่วนประกอบ:ABS/PVC/Magnet\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 4560.00, 'jpg', 2),
 (1, 3, 'CRYBABY Sad Club Series Scene Sets', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 7.2 เซนติเมตร\r\nส่วนประกอบ: ABS/PVC\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 8 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 3840.00, 'jpg', 1),
@@ -198,19 +255,19 @@ INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `type`
+-- Table structure for table `product_type`
 --
 
-CREATE TABLE `type` (
-  `t_id` int(7) NOT NULL,
-  `t_name` varchar(250) NOT NULL
+CREATE TABLE `product_type` (
+  `pt_id` int(7) NOT NULL,
+  `pt_name` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `type`
+-- Dumping data for table `product_type`
 --
 
-INSERT INTO `type` (`t_id`, `t_name`) VALUES
+INSERT INTO `product_type` (`pt_id`, `pt_name`) VALUES
 (1, 'Crybaby'),
 (2, 'Skullpanda'),
 (3, 'Dimoo'),
@@ -230,16 +287,16 @@ INSERT INTO `type` (`t_id`, `t_name`) VALUES
 --
 
 --
--- Indexes for table `admin`
+-- Indexes for table `orders`
 --
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`a_id`);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`oid`);
 
 --
--- Indexes for table `category`
+-- Indexes for table `orders_detail`
 --
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`c_id`);
+ALTER TABLE `orders_detail`
+  ADD PRIMARY KEY (`od_id`);
 
 --
 -- Indexes for table `product`
@@ -248,26 +305,26 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`);
 
 --
--- Indexes for table `type`
+-- Indexes for table `product_type`
 --
-ALTER TABLE `type`
-  ADD PRIMARY KEY (`t_id`);
+ALTER TABLE `product_type`
+  ADD PRIMARY KEY (`pt_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `admin`
-  MODIFY `a_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `orders`
+  MODIFY `oid` int(7) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT for table `orders_detail`
 --
-ALTER TABLE `category`
-  MODIFY `c_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `orders_detail`
+  MODIFY `od_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -276,10 +333,10 @@ ALTER TABLE `product`
   MODIFY `p_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
--- AUTO_INCREMENT for table `type`
+-- AUTO_INCREMENT for table `product_type`
 --
-ALTER TABLE `type`
-  MODIFY `t_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+ALTER TABLE `product_type`
+  MODIFY `pt_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

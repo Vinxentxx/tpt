@@ -11,26 +11,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    // เพิ่มข้อมูลลูกค้าลงในตาราง customer
-    $stmt = $conn->prepare("INSERT INTO customer (cr_name, cr_last, cr_tel, cr_add, cr_mail) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $name, $last, $tel, $add, $mail);
+    // ตรวจสอบรูปแบบอีเมล
+    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        echo "รูปแบบอีเมลไม่ถูกต้อง";
+        exit();
+    }
 
-    if ($stmt->execute()) {
-        $cr_id = $stmt->insert_id; // รับ ID ของลูกค้า
+    // ตรวจสอบรูปแบบเบอร์โทร
+    if (!preg_match('/^[0-9]{10}$/', $tel)) {
+        echo "รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก";
+        exit();
+    }
 
-        // เพิ่มข้อมูลผู้ใช้ลงในตาราง user
-        $stmt = $conn->prepare("INSERT INTO user (cr_id, u_user, u_password) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $cr_id, $username, $password);
+    // ตรวจสอบว่าชื่อผู้ใช้มีอยู่แล้วหรือไม่
+    $stmt = $conn->prepare("SELECT * FROM user WHERE u_user = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo "ชื่อผู้ใช้นี้มีอยู่แล้ว กรุณาเลือกชื่อผู้ใช้ใหม่";
+    } else {
+        // เพิ่มข้อมูลลูกค้าลงในตาราง customer
+        $stmt = $conn->prepare("INSERT INTO customer (cr_name, cr_last, cr_tel, cr_add, cr_mail) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $name, $last, $tel, $add, $mail);
 
         if ($stmt->execute()) {
-            // เปลี่ยนเส้นทางไปยังหน้า login.php
-            header("Location: login.php");
-            exit();
+            $cr_id = $stmt->insert_id; // รับ ID ของลูกค้า
+
+            // เพิ่มข้อมูลผู้ใช้ลงในตาราง user
+            $stmt = $conn->prepare("INSERT INTO user (cr_id, u_user, u_password) VALUES (?, ?, ?)");
+            $stmt->bind_param("iss", $cr_id, $username, $password);
+
+            if ($stmt->execute()) {
+                // เปลี่ยนเส้นทางไปยังหน้า login.php
+                header("Location: login.php");
+                exit();
+            } else {
+                echo "ไม่สามารถสร้างบัญชีผู้ใช้ได้: " . $stmt->error;
+            }
         } else {
-            echo "ไม่สามารถสร้างบัญชีผู้ใช้ได้: " . $stmt->error;
+            echo "ไม่สามารถลงทะเบียนได้: " . $stmt->error;
         }
-    } else {
-        echo "ไม่สามารถลงทะเบียนได้: " . $stmt->error;
     }
 }
 ?>
@@ -42,35 +64,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>ลงทะเบียน</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500&display=swap" rel="stylesheet"> <!-- เพิ่มฟอนต์ Mali -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa; /* พื้นหลังสีอ่อน */
+            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* ให้เต็มความสูงของหน้าจอ */
+            height: 100vh;
             margin: 0;
-            font-family: 'Mali', sans-serif; /* ใช้ฟอนต์ Mali */
+            font-family: 'Mali', sans-serif;
         }
         .form-register {
-            max-width: 500px; /* ขนาดของฟอร์ม */
+            max-width: 500px;
             padding: 40px;
             background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         h2 {
-            color: #c0392b; /* สีแดงเข้ม */
+            color: #c0392b;
             text-align: center;
             margin-bottom: 20px;
         }
         .btn-primary {
-            background-color: #c0392b; /* ปุ่มสีแดง */
+            background-color: #c0392b;
             border-color: #c0392b;
         }
         .btn-primary:hover {
-            background-color: #e74c3c; /* สีแดงอ่อนเมื่อ hover */
+            background-color: #e74c3c;
         }
         .form-group label {
             font-weight: 500;
@@ -78,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .form-control {
             padding: 10px;
             border-radius: 10px;
-            width: 100%; /* ให้ช่องกรอกข้อมูลเต็มความกว้าง */
-            max-width: 400px; /* ตั้งค่าความกว้างสูงสุด */
+            width: 100%;
+            max-width: 400px;
         }
         .btn-block {
             border-radius: 10px;

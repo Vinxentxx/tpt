@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 10:40 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Oct 21, 2024 at 07:12 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,14 +78,14 @@ CREATE TABLE `product` (
   `p_detail` text NOT NULL,
   `p_price` float(9,2) NOT NULL,
   `p_ext` varchar(250) NOT NULL,
-  `t_id` int(7) NOT NULL
+  `pt_id` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`, `t_id`) VALUES
+INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`, `pt_id`) VALUES
 (1, 1, 'CRYBABY × Powerpuff Girls Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 6-9  เซนติเมตร\r\nส่วนประกอบ: PVC/ABS\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสลุ้นรับรางวัลที่ซ่อนอยู่', 4560.00, 'jpg', 1),
 (1, 2, 'SKULLPANDA The Sound Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 7-11 เซนติเมตร\r\nส่วนประกอบ:ABS/PVC/Magnet\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 4560.00, 'jpg', 2),
 (1, 3, 'CRYBABY Sad Club Series Scene Sets', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 7.2 เซนติเมตร\r\nส่วนประกอบ: ABS/PVC\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 8 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 3840.00, 'jpg', 1),
@@ -95,7 +95,7 @@ INSERT INTO `product` (`c_id`, `p_id`, `p_name`, `p_detail`, `p_price`, `p_ext`,
 (1, 7, 'Hirono Reshape Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 8.6-10.3 เซนติเมตร\r\nส่วนประกอบ: PVC/ABS\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 9 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสลุ้นรับรางวัลที่ซ่อนอยู่', 3420.00, 'jpg', 4),
 (1, 8, 'Hirono Shelter Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 6-10 เซนติเมตร\r\nส่วนประกอบ:PVC/ABS/Magnet\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ\r\n', 4560.00, 'jpg', 4),
 (1, 9, 'SKULLPANDA Image Of Reality Series Figures', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 5-8  เซนติเมตร\r\nส่วนประกอบ: PVC/ABS/POM/Magnet\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสลุ้นรับรางวัลที่ซ่อนอยู่', 4560.00, 'jpg', 2),
-(1, 10, 'MOLLY × The Powerpuff Girls Series Action Figure', 'ยี่ห้อ : POP MART\r\nขนาด : Body height 13cm\r\nส่วนประกอบ: PVC/ABS/PP/Nylon/Magnet/Cotton/Terylene/Spandex/Polystone\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 3 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 4650.00, 'jpg', 5),
+(1, 10, 'MOLLY × The Powerpuff Girls Series Action Figure', 'ยี่ห้อ : POP MART\r\nขนาด : Body height 13cm\r\nส่วนประกอบ: PVC/ABS/PP/Nylon/Magnet\r\n/Cotton/Terylene/Spandex/Polystone\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 3 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 4650.00, 'jpg', 5),
 (1, 11, 'MEGA SPACE MOLLY 100%', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 7-8 เซนติเมตร\r\nส่วนประกอบ: PVC/ABS/PC\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 9 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 3870.00, 'jpg', 5),
 (1, 12, 'Harry Potter Heading to Hogwarts Series', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 8.9-10 เซนติเมตร\r\nส่วนประกอบ:  PVC/ABS/Hardware\r\nทั้งเซ็ตจะประกอบไปด้วยกล่องสุ่ม 12 ชิ้น\r\n(หากซื้อทั้งเซ็ตจะไม่มีฟิกเกอร์โมเดลที่ซ้ำกัน)\r\n*มีโอกาสจะได้ฟิกเกอร์ลับ', 3840.00, 'jpg', 6),
 (1, 13, 'POP BEAN Harry Potter Flight Series', 'ยี่ห้อ : POP MART\r\nขนาด : สูงโดยประมาณ 2.5 เซนติเมตร\r\nส่วนประกอบ:PVC', 3840.00, 'jpg', 6),
@@ -273,7 +273,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `p_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT for table `type`
