@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root"; // หรือชื่อผู้ใช้ของคุณ
-$password = ""; // รหัสผ่านของคุณ
+$password = "vinx220203"; // รหัสผ่านของคุณ
 $dbname = "register";
 
 // สร้างการเชื่อมต่อ

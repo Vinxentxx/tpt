@@ -5,7 +5,7 @@ include("connectdb.php");
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "vinx220203";
 $dbname = "shoponline";
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die("เชื่อมต่อฐานข้อมูลไม่ได้");
 mysqli_query($conn, "SET NAMES 'utf8'");

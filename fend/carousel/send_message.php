@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'messaging_system';
 $username = 'root'; // ชื่อผู้ใช้ที่ถูกต้อง
-$password = ''; // รหัสผ่านที่ถูกต้อง (ว่าง)
+$password = 'vinx220203'; // รหัสผ่านที่ถูกต้อง (ว่าง)
 
 // สร้างการเชื่อมต่อ
 $conn = new mysqli($host, $username, $password, $dbname); // ใช้ $host แทน $servername

@@ -138,7 +138,7 @@ $rs2 = mysqli_query($conn, $sql2);
 
 <!-- ปุ่มค้นหาและตัวกรองราคา -->
 <div class="text-center">
-    <form class="form-inline" action="../shoponline/index.php" method="post">
+    <form class="form-inline" action="index1.php" method="post"> <!-- แก้ไข action ที่นี่ -->
         <div class="form-group">
             <label class="control-label" for="textinput">ค้นหา</label>  
             <input name="kw" type="text" placeholder="กรอกคำค้น" class="form-control input-md" required>
@@ -221,53 +221,47 @@ $rs2 = mysqli_query($conn, $sql2);
 </div> <!-- end of container -->
 
 <!-- ไอคอนตะกร้า -->
-<div class="cart-icon" onclick="window.location.href='basket.php';"> <!-- นำทางไปที่ basket.php -->
-    <a href="index.php" class="fa fa-home" style="font-size: 36px; color: #dc3545; margin-right: 10px;" title="กลับสู่หน้าแรก"></a>
-    <a class="fa fa-shopping-cart" style="font-size: 36px; color: #dc3545;"></a>
-    <div class="cart-count"><?= $_SESSION['cart_count']; ?></div>
+<div class="cart-icon" onclick="window.location.href='basket.php';"> 
+    <i class="fa fa-shopping-cart"></i>
+    <span class="cart-count"><?= $_SESSION['cart_count']; ?></span>
 </div>
 
 <!-- ปุ่มกลับไปด้านบน -->
-<div class="back-to-top" id="back-to-top">
+<div class="back-to-top" onclick="scrollToTop();">
     <i class="fa fa-arrow-up"></i>
 </div>
 
 <script>
-    // ฟังก์ชันเพื่อเพิ่มจำนวนสินค้าที่ถูกเพิ่มลงในตะกร้า
+    function toggleFilter() {
+        var filterForm = document.getElementById('filter-form');
+        filterForm.style.display = (filterForm.style.display === 'none' || filterForm.style.display === '') ? 'block' : 'none';
+    }
+
     function addToCart(productId) {
-        const xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
         xhr.open("POST", "add_to_cart.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // ปรับปรุงการแสดงผลของจำนวนสินค้าในตะกร้า
-                    document.querySelector('.cart-count').innerText = xhr.responseText;
-                } else {
-                    console.error('Error: ' + xhr.status); // ถ้ามีข้อผิดพลาด ให้แสดงสถานะ
-                }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert('เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว!');
+                location.reload(); // อัปเดตจำนวนสินค้าในตะกร้า
             }
         };
         xhr.send("product_id=" + productId);
     }
 
-    // ฟังก์ชันสำหรับซ่อนและแสดงฟอร์มกรองราคา
-    function toggleFilter() {
-        const filterForm = document.getElementById("filter-form");
-        filterForm.style.display = filterForm.style.display === "none" || filterForm.style.display === "" ? "block" : "none";
-    }
-
-    // ปุ่มกลับไปด้านบน
-    const backToTopButton = document.getElementById("back-to-top");
-    
     window.onscroll = function() {
-        backToTopButton.style.display = (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) ? "block" : "none";
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
     };
 
-    backToTopButton.onclick = function() {
-        window.scrollTo({ top: 0, behavior: "smooth" }); // เลื่อนกลับไปด้านบนแบบ smooth
-    };
+    function scrollToTop() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 </script>
-
 </body>
 </html>
