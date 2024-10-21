@@ -104,7 +104,7 @@ session_start(); // เริ่ม session หากยังไม่ได้
 
 $servername = "localhost";
 $username = "root";
-$password = "Tnv!Fl#8lS65";
+$password = "vinx220203";
 $dbname = "shoponline";
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die("เชื่อมต่อฐานข้อมูลไม่ได้");
 mysqli_query($conn, "SET NAMES 'utf8'");
