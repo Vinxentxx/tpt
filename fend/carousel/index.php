@@ -179,18 +179,18 @@ if (isset($_SESSION['cart'])) {
     <div class="carousel-inner">
         <div class="carousel-item active">
             <a href="vw.php?pt_id=2">
-                <img src="https://prod-global-static.oss-us-east-1.aliyuncs.com/globalAdmin/1719177703877____download-4____.jpg?x-oss-process=image/format,webp" class="d-block w-100">
+                <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-5-768x768.png" class="d-block w-100">
             </a>
             <div class="carousel-caption text-start">
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://prod-global-static.oss-us-east-1.aliyuncs.com/globalAdmin/1719177707770____download-5____.jpg?x-oss-process=image/format,webp" class="d-block w-100">
+            <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-6-768x768.png" class="d-block w-100">
             <div class="carousel-caption">   
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://fado.vn/blog/wp-content/uploads/2023/05/4-diem-an-tuong-cua-mo-hinh-Skullpanda.jpg" class="d-block w-100">
+            <img src="https://fortunetown.co.th/wp-content/uploads/2023/05/image-9-768x768.png" class="d-block w-100">
             <div class="carousel-caption text-end"> 
             </div>
         </div>
