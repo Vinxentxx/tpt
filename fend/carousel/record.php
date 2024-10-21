@@ -2,20 +2,19 @@
 @session_start();
 include("connectdb.php");
 
-$total = 0; // กำหนดตัวแปรรวมราคา
+total = 0; // กำหนดตัวแปรรวมราคา
 
 foreach($_SESSION['sid'] as $pid) {
     $sum[$pid] = $_SESSION['sprice'][$pid] * $_SESSION['sitem'][$pid];
     $total += $sum[$pid];
 }
 
-// ตรวจสอบค่าของ member_id และ cr_id
-//$member_id = isset($_SESSION['member_id']) ? $_SESSION['member_id'] : null; 
-$cr_id = isset($_SESSION['cr_id']) ? $_SESSION['cr_id'] : null; 
+// ตรวจสอบค่าของ cr_id
+$cr_id = isset($_SESSION['cr_id']) ? $_SESSION['cr_id'] : null;
 
 // ตรวจสอบให้แน่ใจว่ามีค่า cr_id
 if (is_null($cr_id)) {
-    die("Error: cr_id cannot be null.");
+    die("Error: cr_id cannot be null. Please ensure that the user is logged in.");
 }
 
 // สร้างคำสั่ง SQL
