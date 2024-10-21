@@ -2,7 +2,7 @@
 @session_start();
 include("connectdb.php");
 
-total = 0; // กำหนดตัวแปรรวมราคา
+$total = 0; // กำหนดตัวแปรรวมราคา
 
 foreach($_SESSION['sid'] as $pid) {
     $sum[$pid] = $_SESSION['sprice'][$pid] * $_SESSION['sitem'][$pid];
@@ -29,5 +29,5 @@ foreach($_SESSION['sid'] as $pid) {
 
 echo "<meta http-equiv=\"refresh\" content=\"0;URL=order.php\">";
 ?>
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
