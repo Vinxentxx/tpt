@@ -3,7 +3,7 @@
 $host = 'localhost';
 $dbname = 'messaging_system';
 $username = 'root';
-$password = 'Tnv!Fl#8lS65';
+$password = 'vinx220203';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
