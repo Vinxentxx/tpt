@@ -4,7 +4,7 @@ include("connectdb.php");
 $host = 'localhost';
 $dbname = 'messaging_system';
 $username = 'root';
-$password = '220203vinx';
+$password = 'vinx220203';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
