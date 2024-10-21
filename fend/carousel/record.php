@@ -4,7 +4,7 @@ include("connectdb.php");
 
 // ตรวจสอบให้แน่ใจว่าผู้ใช้ได้เข้าสู่ระบบ
 if (!isset($_SESSION['cr_id'])) {
-    header("Location: order.php"); // เปลี่ยนเส้นทางไปยังหน้าลงชื่อเข้าใช้
+    header("Location: view_order.php"); // เปลี่ยนเส้นทางไปยังหน้าลงชื่อเข้าใช้
     exit();
 }
 
