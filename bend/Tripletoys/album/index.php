@@ -101,6 +101,7 @@ session_start();
 
                         
                         <li><a href="logout.php" class="text-white">ออกจากระบบ</a></li>
+                        <li><a href="order.php" class="text-white">ดูคำสั่งซื้อ</a></li>
                         <li><a href="customer.php" class="text-white">ข้อมูลลูกค้า</a></li>
                         <li><a href="admin_messages.php" class="text-white">ข้อความ</a></li>
                     </ul>
