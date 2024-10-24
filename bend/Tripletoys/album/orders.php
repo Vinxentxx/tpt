@@ -31,6 +31,7 @@ $result = mysqli_query($conn, $sql);
                 <th>Quantity</th>
                 <th>Total Price</th>
                 <th>Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,10 @@ $result = mysqli_query($conn, $sql);
                     <td><?= $order['quantity']; ?></td>
                     <td><?= number_format($order['total_price'], 2); ?> บาท</td>
                     <td><?= $order['order_date']; ?></td>
+                    <td>
+                        <!-- ปุ่มสำหรับลิงก์ไปที่หน้า profile.php -->
+                        <a href="profile.php?customer_id=<?= $order['customer_id']; ?>" class="btn btn-info btn-sm">รายละเอียดผู้ส่ง</a>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
