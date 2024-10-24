@@ -7,28 +7,42 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost"; // เปลี่ยนถ้าจำเป็น
+$username = "root"; // ชื่อผู้ใช้ฐานข้อมูล
+$password = ""; // รหัสผ่านฐานข้อมูล
+$dbname = "shoponline"; // ชื่อฐานข้อมูล
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $conn->connect_error);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // ตรวจสอบว่าไฟล์ถูกส่งมาและไม่มีข้อผิดพลาด
     if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "uploads/"; // โฟลเดอร์ที่จะเก็บไฟล์
+        $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES['payment_image']['name']);
         
-        // ตรวจสอบว่าต้องสร้างโฟลเดอร์ขึ้นใหม่หรือไม่
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0755, true);
         }
 
-        // ตรวจสอบขนาดไฟล์และชนิดไฟล์
         $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf']; // ประเภทไฟล์ที่อนุญาต
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
         if (!in_array($file_type, $allowed_types)) {
             echo "ไฟล์ประเภทนี้ไม่อนุญาต: " . htmlspecialchars($file_type);
             exit();
         }
 
-        // อัปโหลดไฟล์
         if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
-            echo "อัปโหลดไฟล์สำเร็จ: " . htmlspecialchars(basename($_FILES['payment_image']['name']));
+            // บันทึกข้อมูลลงฐานข้อมูล
+            $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
+            $stmt = $conn->prepare("INSERT INTO payments (user_id, payment_image) VALUES (?, ?)");
+            $stmt->bind_param("is", $user_id, $target_file);
+            $stmt->execute();
+
+            echo "อัปโหลดไฟล์สำเร็จและบันทึกข้อมูลลงฐานข้อมูลเรียบร้อย";
+            $stmt->close();
         } else {
             echo "อัปโหลดไฟล์ไม่สำเร็จ";
         }
@@ -50,4 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$conn->close();
 ?>
