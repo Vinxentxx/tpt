@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
+                    <a href="view_order.php" class="btn btn-primary">ยืนยันการสั่งซื้อ</a>
                 </form>
             </div>
 
