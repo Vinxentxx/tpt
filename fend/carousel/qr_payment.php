@@ -61,7 +61,7 @@
         <div class="mb-3">
             <input type="file" class="form-control" name="payment_image" required>
         </div>
-        <button type="submit" class="btn btn-primary">ชำระเงิน</button>
+        <button type="submit" class="btn btn-primary">qrpayment</button>
     </form>
 </div>
 
