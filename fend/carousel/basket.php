@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_discount'])) {
                     <?php if(empty($_SESSION['sid'])) { ?>
                         <a href="#" class="btn btn-primary" onClick="alert('กรุณาเลือกสินค้า');">สั่งซื้อสินค้า</a>
                     <?php } else { ?>
-                        <a href="order.php" class="btn btn-primary">สั่งซื้อสินค้า</a>
+                        <a href="payment.php" class="btn btn-primary">สั่งซื้อสินค้า</a>
                     <?php } ?>
                 </td>
             </tr>
