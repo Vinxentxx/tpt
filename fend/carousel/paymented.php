@@ -7,88 +7,47 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// ตรวจสอบว่ามีการอัพโหลดไฟล์หรือไม่
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['payment_image'])) {
-    // ตรวจสอบการอัพโหลดไฟล์
-    $fileTmpPath = $_FILES['payment_image']['tmp_name'];
-    $fileName = $_FILES['payment_image']['name'];
-    $fileSize = $_FILES['payment_image']['size'];
-    $fileType = $_FILES['payment_image']['type'];
-    $uploadDir = 'uploads/'; // กำหนดโฟลเดอร์สำหรับการอัพโหลดไฟล์
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ตรวจสอบว่าไฟล์ถูกส่งมาและไม่มีข้อผิดพลาด
+    if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === UPLOAD_ERR_OK) {
+        $target_dir = "uploads/"; // โฟลเดอร์ที่จะเก็บไฟล์
+        $target_file = $target_dir . basename($_FILES['payment_image']['name']);
+        
+        // ตรวจสอบว่าต้องสร้างโฟลเดอร์ขึ้นใหม่หรือไม่
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
 
-    // ย้ายไฟล์ไปยังโฟลเดอร์ปลายทาง
-    if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
+        // ตรวจสอบขนาดไฟล์และชนิดไฟล์
+        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf']; // ประเภทไฟล์ที่อนุญาต
+        if (!in_array($file_type, $allowed_types)) {
+            echo "ไฟล์ประเภทนี้ไม่อนุญาต: " . htmlspecialchars($file_type);
+            exit();
+        }
 
-    $destPath = $uploadDir . $fileName;
-    if (move_uploaded_file($fileTmpPath, $destPath)) {
-        // อัพโหลดสำเร็จ
+        // อัปโหลดไฟล์
+        if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
+            echo "อัปโหลดไฟล์สำเร็จ: " . htmlspecialchars(basename($_FILES['payment_image']['name']));
+        } else {
+            echo "อัปโหลดไฟล์ไม่สำเร็จ";
+        }
     } else {
-        echo "การอัพโหลดไฟล์ล้มเหลว";
-        exit();
+        // แสดงข้อผิดพลาดถ้ามี
+        switch ($_FILES['payment_image']['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                echo "ไฟล์มีขนาดใหญ่เกินไป";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                echo "ไม่มีไฟล์ถูกเลือก";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                echo "ไฟล์ถูกอัปโหลดไม่สมบูรณ์";
+                break;
+            default:
+                echo "เกิดข้อผิดพลาดในการอัปโหลด: " . $_FILES['payment_image']['error'];
+        }
     }
-} else {
-    header("Location: qr_payment.php");
-    exit();
 }
 ?>
-
-<!doctype html>
-<html lang="th">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>ชำระเงินเรียบร้อยแล้ว</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;500&display=swap" rel="stylesheet">
-    <link href="bootstrap.css" rel="stylesheet" type="text/css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Mali', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #28a745;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 3em;
-        }
-        .container {
-            text-align: center;
-            margin-top: 50px;
-        }
-        .icon-success {
-            color: #28a745;
-            font-size: 100px;
-            margin: 20px auto;
-        }
-        .btn-primary {
-            background-color: #dc3545;
-            border-color: #dc3545;
-            border-radius: 20px;
-        }
-        .btn-primary:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>ชำระเงินเรียบร้อยแล้ว</h1>
-    <div class="icon-success">
-        <i class="fa fa-check-circle"></i>
-    </div>
-    <form action="view_order.php" method="GET">
-        <button type="submit" class="btn btn-primary">ดูรายละเอียดคำสั่งซื้อ</button>
-    </form>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
