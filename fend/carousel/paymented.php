@@ -20,13 +20,15 @@ if ($conn->connect_error) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "uploads/";
+        $target_dir = "payment_uploads/"; // เปลี่ยนที่เก็บไฟล์
         $target_file = $target_dir . basename($_FILES['payment_image']['name']);
         
+        // สร้างโฟลเดอร์ถ้ายังไม่มี
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0755, true);
         }
 
+        // ตรวจสอบประเภทไฟล์
         $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
         if (!in_array($file_type, $allowed_types)) {
@@ -34,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
+        // อัปโหลดไฟล์
         if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
             // บันทึกข้อมูลลงฐานข้อมูล
             $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
