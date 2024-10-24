@@ -18,8 +18,6 @@ if ($conn->connect_error) {
     die("การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $conn->connect_error);
 }
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === UPLOAD_ERR_OK) {
         $target_dir = "uploads/";
@@ -41,9 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
             $stmt = $conn->prepare("INSERT INTO payments (user_id, payment_image) VALUES (?, ?)");
             $stmt->bind_param("is", $user_id, $target_file);
-            $stmt->execute();
 
-            echo "อัปโหลดไฟล์สำเร็จและบันทึกข้อมูลลงฐานข้อมูลเรียบร้อย";
+            if ($stmt->execute()) {
+                echo "อัปโหลดไฟล์สำเร็จและบันทึกข้อมูลลงฐานข้อมูลเรียบร้อย";
+            } else {
+                echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลลงฐานข้อมูล: " . $stmt->error;
+            }
+
             $stmt->close();
         } else {
             echo "อัปโหลดไฟล์ไม่สำเร็จ";
@@ -66,15 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
-    // อัปโหลดสำเร็จ
-    // บันทึกข้อมูลลงฐานข้อมูล
-} else {
-    // แสดงข้อความข้อผิดพลาด
-    echo "อัปโหลดไฟล์ไม่สำเร็จ: " . $_FILES['payment_image']['error'];
-}
-
 
 $conn->close();
 ?>
