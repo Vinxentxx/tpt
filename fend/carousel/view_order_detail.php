@@ -10,7 +10,11 @@ if (!isset($_SESSION['user_id'])) {
 
 // ดึงข้อมูลการสั่งซื้อจากฐานข้อมูล
 $user_id = $_SESSION['user_id'];
-$query = "SELECT * FROM order_detail WHERE user_id = ? ORDER BY order_date DESC";
+$query = "SELECT od.*, p.p_name, p.p_price 
+          FROM order_detail od 
+          JOIN products p ON od.p_id = p.p_id
+          WHERE od.user_id = ? 
+          ORDER BY od.order_date DESC";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -66,15 +70,19 @@ $result = $stmt->get_result();
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>วันที่</th>
-                    <th>ยอดรวม</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>รวม</th>
                 </tr>
             </thead>
             <tbody>
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
-                    <td><?php echo $row['order_date']; ?></td>
-                    <td><?php echo number_format($row['total'], 0); ?> บาท</td>
+                    <td><?php echo $row['p_name']; ?></td>
+                    <td><?php echo number_format($row['p_price'], 0); ?> บาท</td>
+                    <td><?php echo $row['quantity']; ?></td> <!-- Assuming quantity column exists -->
+                    <td><?php echo number_format($row['p_price'] * $row['quantity'], 0); ?> บาท</td>
                 </tr>
             <?php endwhile; ?>
             </tbody>
