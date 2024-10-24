@@ -119,7 +119,7 @@ $total_after_discount = $total - $discount_price;
             <?php endif; ?>
             
             <div class="card-body btn-submit-payment text-right"> <!-- เพิ่มคลาส text-right ที่นี่ -->
-                <form method="POST" action="test_paymented.php">
+                <form method="POST" action="qr_payment.php">
                     <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
             </div>
