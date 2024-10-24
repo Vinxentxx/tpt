@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 // เชื่อมต่อฐานข้อมูล
 $servername = "localhost"; // เปลี่ยนถ้าจำเป็น
 $username = "root"; // ชื่อผู้ใช้ฐานข้อมูล
-$password = ""; // รหัสผ่านฐานข้อมูล
+$password = "vinx220203"; // รหัสผ่านฐานข้อมูล
 $dbname = "shoponline"; // ชื่อฐานข้อมูล
 
 $conn = new mysqli($servername, $username, $password, $dbname);
