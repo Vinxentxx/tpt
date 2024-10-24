@@ -1,13 +1,3 @@
-<?php
-session_start();
-
-// ตรวจสอบการล็อกอิน
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
-
 <!doctype html>
 <html lang="th">
 <head>
@@ -22,6 +12,10 @@ if (!isset($_SESSION['user_id'])) {
             font-family: 'Mali', sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         h1 {
             color: #dc3545;
@@ -36,6 +30,11 @@ if (!isset($_SESSION['user_id'])) {
         .qrcode {
             max-width: 200px;
             margin: 20px auto;
+        }
+        .qrcode img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .form-upload {
             margin-top: 30px;
