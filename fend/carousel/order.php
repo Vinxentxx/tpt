@@ -21,38 +21,6 @@ $discount_price = isset($_SESSION['discount_price']) ? $_SESSION['discount_price
 
 // คำนวณราคาหลังหักส่วนลด
 $total_after_discount = $total - $discount_price;
-
-// เพิ่มข้อมูลคำสั่งซื้อในตาราง order
-$cr_id = $_SESSION['user_id']; // รหัสลูกค้าจาก session
-$odate = date("Y-m-d H:i:s"); // วันที่และเวลาปัจจุบัน
-
-// เตรียมคำสั่ง SQL สำหรับบันทึกข้อมูลคำสั่งซื้อ
-$sql_order = "INSERT INTO `order` (ototal, odate, cr_id) VALUES ('$total_after_discount', '$odate', '$cr_id')";
-$result_order = mysqli_query($conn, $sql_order);
-
-// ตรวจสอบว่าบันทึกข้อมูลคำสั่งซื้อสำเร็จหรือไม่
-if ($result_order) {
-    $oid = mysqli_insert_id($conn); // ดึงหมายเลขคำสั่งซื้อที่เพิ่งบันทึก
-
-    // บันทึกรายละเอียดสินค้าลงในตาราง orders_detail
-    foreach ($_SESSION['sid'] as $pid) {
-        $item = $_SESSION['sitem'][$pid]; // จำนวนสินค้าที่สั่ง
-        $price = $_SESSION['sprice'][$pid]; // ราคาต่อชิ้น
-
-        // เตรียมคำสั่ง SQL สำหรับบันทึกข้อมูลรายละเอียดสินค้า
-        $sql_detail = "INSERT INTO orders_detail (oid, pid, item, price) VALUES ('$oid', '$pid', '$item', '$price')";
-        mysqli_query($conn, $sql_detail);
-    }
-
-    // ล้าง session ของตะกร้าสินค้าหลังจากบันทึกข้อมูลเสร็จ
-    unset($_SESSION['sid'], $_SESSION['sitem'], $_SESSION['sprice'], $_SESSION['discount_price']);
-
-    // เปลี่ยนเส้นทางไปยังหน้าแสดงรายละเอียดคำสั่งซื้อ
-    header("Location: view_order_detail.php?a=$oid");
-    exit();
-} else {
-    echo "<p class='text-danger'>เกิดข้อผิดพลาดในการบันทึกข้อมูลคำสั่งซื้อ กรุณาลองใหม่อีกครั้ง</p>";
-}
 ?>
 
 <!doctype html>
@@ -66,16 +34,16 @@ if ($result_order) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f8f9fa; /* สีพื้นหลัง */
             font-family: 'Mali', sans-serif;
             margin: 0;
             padding: 0;
         }
         h1 {
-            color: #dc3545;
+            color: #dc3545; /* เปลี่ยนเป็นสีแดง */
             text-align: center;
             margin-bottom: 20px;
-            font-size: 3em;
+            font-size: 3em; /* ขนาดตัวอักษรใหญ่ */
         }
         .card {
             border: none;
@@ -84,12 +52,12 @@ if ($result_order) {
             margin-top: 20px;
         }
         .btn-primary {
-            background-color: #dc3545;
+            background-color: #dc3545; /* ปุ่มสีแดง */
             border-color: #dc3545;
             border-radius: 20px;
         }
         .btn-primary:hover {
-            background-color: #c82333;
+            background-color: #c82333; /* สีแดงเข้มเมื่อ hover */
             border-color: #bd2130;
         }
         .empty-cart-message {
@@ -98,11 +66,69 @@ if ($result_order) {
             font-weight: bold;
         }
         .btn-submit-payment {
-            text-align: right;
+            text-align: right; /* จัดตำแหน่งปุ่มให้ชิดขวา */
         }
-    </style>
+    </style> 
 </head>
 <body>
-    <!-- ส่วนของหน้า HTML ไม่ได้เปลี่ยนแปลง -->
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1>ยืนยันการสั่งซื้อ</h1>
+            <?php if (!empty($_SESSION['sid'])): ?>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ชื่อสินค้า</th>
+                            <th>ราคา/ชิ้น</th>
+                            <th>จำนวน</th>
+                            <th>รวม</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach ($_SESSION['sid'] as $pid) {
+                        $sum = $_SESSION['sprice'][$pid] * $_SESSION['sitem'][$pid];
+                    ?>
+                        <tr>
+                            <td><?php echo $_SESSION['sname'][$pid]; ?></td>
+                            <td><?php echo number_format($_SESSION['sprice'][$pid], 0); ?> บาท</td>
+                            <td><?php echo $_SESSION['sitem'][$pid]; ?></td>
+                            <td><?php echo number_format($sum, 0); ?> บาท</td>
+                        </tr>
+                    <?php } ?>
+                    <tr class="total-row">
+                        <td colspan="3" class="text-right"><strong>รวมทั้งสิ้น</strong></td>
+                        <td><strong><?php echo number_format($total, 0); ?> บาท</strong></td>
+                    </tr>
+                    <?php if ($discount_price > 0): ?>
+                    <tr class="total-row total-row-discount">
+                        <td colspan="3" class="text-right"><strong>ส่วนลด</strong></td>
+                        <td><strong>- <?php echo number_format($discount_price, 0); ?> บาท</strong></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3" class="text-right"><strong>ยอดรวมหลังหักส่วนลด</strong></td>
+                        <td><strong><?php echo number_format($total - $discount_price, 0); ?> บาท</strong></td>
+                    </tr>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="empty-cart-message">ไม่มีสินค้าที่เลือกในตะกร้า</p>
+            <?php endif; ?>
+            
+            <div class="card-body btn-submit-payment text-right"> <!-- เพิ่มคลาส text-right ที่นี่ -->
+                <form method="POST" action="qr_payment.php">
+                    <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
