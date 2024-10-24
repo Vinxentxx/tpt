@@ -21,6 +21,33 @@ $discount_price = isset($_SESSION['discount_price']) ? $_SESSION['discount_price
 
 // คำนวณราคาหลังหักส่วนลด
 $total_after_discount = $total - $discount_price;
+
+// ตรวจสอบการส่งแบบฟอร์ม
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // บันทึกข้อมูลลงฐานข้อมูล order_detail
+    $user_id = $_SESSION['user_id'];
+    $order_date = date('Y-m-d H:i:s');
+    $order_total = $total_after_discount;
+
+    // เพิ่มข้อมูลลงในตาราง order_detail
+    $stmt = $conn->prepare("INSERT INTO order_detail (user_id, order_date, total) VALUES (?, ?, ?)");
+    $stmt->bind_param("isi", $user_id, $order_date, $order_total);
+
+    if ($stmt->execute()) {
+        // หลังบันทึกข้อมูลเสร็จแล้ว สามารถรีเซ็ตตะกร้าสินค้า
+        unset($_SESSION['sid']);
+        unset($_SESSION['sprice']);
+        unset($_SESSION['sitem']);
+        unset($_SESSION['sname']);
+        unset($_SESSION['discount_price']);
+
+        // รีไดเร็กต์ไปยังหน้า view_order_detail.php
+        header("Location: view_order_detail.php");
+        exit();
+    } else {
+        echo "เกิดข้อผิดพลาดในการบันทึกข้อมูล: " . $conn->error;
+    }
+}
 ?>
 
 <!doctype html>
@@ -118,8 +145,8 @@ $total_after_discount = $total - $discount_price;
                 <p class="empty-cart-message">ไม่มีสินค้าที่เลือกในตะกร้า</p>
             <?php endif; ?>
             
-            <div class="card-body btn-submit-payment text-right"> <!-- เพิ่มคลาส text-right ที่นี่ -->
-                <form method="POST" action="test_paymented.php">
+            <div class="card-body btn-submit-payment text-right">
+                <form method="POST" action="">
                     <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
             </div>
