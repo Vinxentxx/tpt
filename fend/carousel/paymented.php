@@ -1,77 +1,65 @@
-<?php
-session_start();
-
-// ตรวจสอบการล็อกอิน
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// เชื่อมต่อฐานข้อมูล
-$servername = "localhost"; // เปลี่ยนถ้าจำเป็น
-$username = "root"; // ชื่อผู้ใช้ฐานข้อมูล
-$password = "vinx220203"; // รหัสผ่านฐานข้อมูล
-$dbname = "shoponline"; // ชื่อฐานข้อมูล
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $conn->connect_error);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "payment_uploads/"; // เปลี่ยนที่เก็บไฟล์
-        $target_file = $target_dir . basename($_FILES['payment_image']['name']);
-        
-        // สร้างโฟลเดอร์ถ้ายังไม่มี
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0755, true);
+<!doctype html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ชำระเงิน</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;500&display=swap" rel="stylesheet">
+    <link href="bootstrap.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Mali', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
-        // ตรวจสอบประเภทไฟล์
-        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
-        if (!in_array($file_type, $allowed_types)) {
-            echo "ไฟล์ประเภทนี้ไม่อนุญาต: " . htmlspecialchars($file_type);
-            exit();
+        .container {
+            text-align: center;
         }
-
-        // อัปโหลดไฟล์
-        if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
-            // บันทึกข้อมูลลงฐานข้อมูล
-            $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
-            $filename = basename($_FILES['payment_image']['name']); // ใช้ชื่อไฟล์แทนเส้นทาง
-            $stmt = $conn->prepare("INSERT INTO payments (cr_id, payment_image) VALUES (?, ?)");
-            $stmt->bind_param("is", $user_id, $filename);
-
-            if ($stmt->execute()) {
-                echo "อัปโหลดไฟล์สำเร็จและบันทึกข้อมูลลงฐานข้อมูลเรียบร้อย";
-            } else {
-                echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลลงฐานข้อมูล: " . $stmt->error;
-            }
-
-            $stmt->close();
-        } else {
-            echo "อัปโหลดไฟล์ไม่สำเร็จ: " . $_FILES['payment_image']['error'];
+        h1 {
+            color: #dc3545;
+            margin-top: 0;
+            font-size: 3em;
         }
-    } else {
-        // แสดงข้อผิดพลาดถ้ามี
-        switch ($_FILES['payment_image']['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "ไฟล์มีขนาดใหญ่เกินไป";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "ไม่มีไฟล์ถูกเลือก";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "ไฟล์ถูกอัปโหลดไม่สมบูรณ์";
-                break;
-            default:
-                echo "เกิดข้อผิดพลาดในการอัปโหลด: " . $_FILES['payment_image']['error'];
+        .qrcode {
+            max-width: 200px;
+            margin: 20px auto;
         }
-    }
-}
+        .form-upload {
+            margin-top: 30px;
+        }
+        .btn-primary {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
+</head>
+<body>
 
-$conn->close();
-?>
+<div class="container">
+    <h1>ชำระเงิน</h1>
+    <div class="qrcode">
+        <img src="https://img2.pic.in.th/pic/payment8ee9d467f44c1d3f.md.png" alt="QR Code" class="img-fluid">
+    </div>
+    <form action="paymented.php" method="POST" enctype="multipart/form-data" class="form-upload">
+        <div class="mb-3">
+            <input type="file" class="form-control" name="payment_image" required>
+        </div>
+        <button type="submit" class="btn btn-primary">ชำระเงิน</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
