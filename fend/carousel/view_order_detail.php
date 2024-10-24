@@ -1,28 +1,9 @@
-<?php
-session_start();
-include("connectdb.php"); // รวมไฟล์เชื่อมต่อฐานข้อมูล
-
-// ตรวจสอบการล็อกอิน
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// ดึงข้อมูลการสั่งซื้อจากฐานข้อมูล
-$user_id = $_SESSION['user_id'];
-$query = "SELECT * FROM order_detail WHERE user_id = ? ORDER BY order_date DESC";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-?>
-
 <!doctype html>
 <html lang="th">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>รายละเอียดการสั่งซื้อ</title>
+    <title>ชำระเงิน</title>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;500&display=swap" rel="stylesheet">
     <link href="bootstrap.css" rel="stylesheet" type="text/css">
     <style>
@@ -31,26 +12,30 @@ $result = $stmt->get_result();
             font-family: 'Mali', sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
         }
         h1 {
             color: #dc3545;
-            text-align: center;
-            margin-top: 20px;
+            margin-top: 0;
             font-size: 3em;
         }
-        .container {
-            margin: 50px auto;
-            max-width: 800px;
+        .qrcode {
+            max-width: 200px;
+            margin: 20px auto;
         }
-        table {
-            width: 100%;
-            margin-top: 20px;
+        .form-upload {
+            margin-top: 30px;
         }
         .btn-primary {
             background-color: #dc3545;
             border-color: #dc3545;
             border-radius: 20px;
-            margin-top: 30px;
         }
         .btn-primary:hover {
             background-color: #c82333;
@@ -61,32 +46,38 @@ $result = $stmt->get_result();
 <body>
 
 <div class="container">
-    <h1>รายละเอียดการสั่งซื้อ</h1>
-    <?php if ($result->num_rows > 0): ?>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>วันที่</th>
-                    <th>ยอดรวม</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['order_date']; ?></td>
-                    <td><?php echo number_format($row['total'], 0); ?> บาท</td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p class="empty-cart-message">ยังไม่มีการสั่งซื้อใดๆ</p>
-    <?php endif; ?>
-    
-    <form action="order.php" method="GET" class="text-right">
-        <button type="submit" class="btn btn-primary">กลับไปที่หน้าสั่งซื้อ</button>
+    <h1>ชำระเงิน</h1>
+    <div class="qrcode">
+        <img src="https://img2.pic.in.th/pic/payment8ee9d467f44c1d3f.md.png" alt="QR Code" class="img-fluid">
+    </div>
+    <form action="paymented.php" method="POST" enctype="multipart/form-data" class="form-upload">
+        <div class="mb-3">
+            <input type="file" class="form-control" name="payment_image" required>
+        </div>
+        <button type="submit" class="btn btn-primary">ชำระเงิน</button>
     </form>
 </div>
+
+<?php
+// ถ้าต้องการจะทำการอัปโหลดไฟล์และรีไดเร็กต์ไปยัง view_order_detail.php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // ตรวจสอบว่ามีการอัปโหลดไฟล์หรือไม่
+    if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] == UPLOAD_ERR_OK) {
+        // ตั้งค่าพาธในการเก็บไฟล์
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["payment_image"]["name"]);
+        
+        // ย้ายไฟล์ที่อัปโหลดไปยังโฟลเดอร์ที่กำหนด
+        if (move_uploaded_file($_FILES["payment_image"]["tmp_name"], $target_file)) {
+            // รีไดเร็กต์ไปยัง view_order_detail.php
+            header("Location: view_order_detail.php");
+            exit();
+        } else {
+            echo "<p class='text-danger'>เกิดข้อผิดพลาดในการอัปโหลดไฟล์</p>";
+        }
+    }
+}
+?>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
