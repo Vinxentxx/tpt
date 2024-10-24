@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
             // บันทึกข้อมูลลงฐานข้อมูล
             $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
+            $filename = basename($_FILES['payment_image']['name']); // ใช้ชื่อไฟล์แทนเส้นทาง
             $stmt = $conn->prepare("INSERT INTO payments (user_id, payment_image) VALUES (?, ?)");
-            $stmt->bind_param("is", $user_id, $target_file);
+            $stmt->bind_param("is", $user_id, $filename);
 
             if ($stmt->execute()) {
                 echo "อัปโหลดไฟล์สำเร็จและบันทึกข้อมูลลงฐานข้อมูลเรียบร้อย";
