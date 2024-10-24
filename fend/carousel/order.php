@@ -66,7 +66,7 @@ $total_after_discount = $total - $discount_price;
             font-weight: bold;
         }
         .btn-submit-payment {
-            text-align: left;
+            text-align: right; /* จัดตำแหน่งปุ่มให้ชิดขวา */
         }
     </style> 
 </head>
@@ -118,7 +118,7 @@ $total_after_discount = $total - $discount_price;
                 <p class="empty-cart-message">ไม่มีสินค้าที่เลือกในตะกร้า</p>
             <?php endif; ?>
             
-            <div class="card-body btn-submit-payment">
+            <div class="card-body btn-submit-payment text-right"> <!-- เพิ่มคลาส text-right ที่นี่ -->
                 <form method="POST" action="qr_payment.php">
                     <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
