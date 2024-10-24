@@ -146,10 +146,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
             
             <div class="card-body btn-submit-payment text-right">
-                <form method="POST" action="">
-                    <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
+                <form method="POST" action="view_order_detail.php"> <!-- แก้ไข action ที่นี่ -->
+                <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
