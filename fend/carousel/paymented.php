@@ -58,6 +58,27 @@
     </form>
 </div>
 
+<?php
+// ถ้าต้องการจะทำการอัปโหลดไฟล์และรีไดเร็กต์ไปยัง view_order_detail.php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // ตรวจสอบว่ามีการอัปโหลดไฟล์หรือไม่
+    if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] == UPLOAD_ERR_OK) {
+        // ตั้งค่าพาธในการเก็บไฟล์
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["payment_image"]["name"]);
+        
+        // ย้ายไฟล์ที่อัปโหลดไปยังโฟลเดอร์ที่กำหนด
+        if (move_uploaded_file($_FILES["payment_image"]["tmp_name"], $target_file)) {
+            // รีไดเร็กต์ไปยัง view_order_detail.php
+            header("Location: view_order_detail.php");
+            exit();
+        } else {
+            echo "<p class='text-danger'>เกิดข้อผิดพลาดในการอัปโหลดไฟล์</p>";
+        }
+    }
+}
+?>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
