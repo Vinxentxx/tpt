@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("connectdb.php"); // รวมไฟล์เชื่อมต่อฐานข้อมูล
-include("phpqrcode.php"); // รวมไลบรารี QR Code
 
 // ตรวจสอบการล็อกอิน
 if (!isset($_SESSION['user_id'])) {
@@ -9,8 +8,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$orderId = null;
-$paymentMethod = null;
 $total = 0; // ตัวแปรรวมราคา
 
 // คำนวณยอดรวม
@@ -22,27 +19,8 @@ foreach ($_SESSION['sid'] as $pid) {
 // ตรวจสอบและดึงราคาส่วนลดจาก session
 $discount_price = isset($_SESSION['discount_price']) ? $_SESSION['discount_price'] : 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $paymentMethod = $_POST['payment_method'];
-
-    // คำนวณราคาหลังหักส่วนลด
-    $total_after_discount = $total - $discount_price;
-
-    // บันทึกข้อมูลใบสั่งซื้อในฐานข้อมูล
-    $sql = "INSERT INTO orders (odate, ototal, payment_status, cr_name) VALUES (NOW(), '$total_after_discount', 'pending', 'ไม่ระบุชื่อ')";
-    mysqli_query($conn, $sql) or die("insert error: " . mysqli_error($conn));
-    $orderId = mysqli_insert_id($conn); // ดึง ID ที่สร้างขึ้นล่าสุด
-
-    // ถ้าเลือกชำระผ่านคิวอาร์โค้ด
-    if ($paymentMethod === 'qr') {
-        $qrData = "https://example.com/pay?order_id=" . $orderId; // สร้างลิงก์สำหรับคิวอาร์โค้ด
-        QRcode::png($qrData, 'qrcode.png'); // สร้างคิวอาร์โค้ด
-    } elseif ($paymentMethod === 'cod') {
-        // เปลี่ยนเส้นทางไปยัง view_order.php
-        header("Location: view_order.php?order_id=$orderId");
-        exit();
-    }
-}
+// คำนวณราคาหลังหักส่วนลด
+$total_after_discount = $total - $discount_price;
 ?>
 
 <!doctype html>
@@ -81,20 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-primary:hover {
             background-color: #c82333; /* สีแดงเข้มเมื่อ hover */
             border-color: #bd2130;
-        }
-        .payment-info {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .total-row {
-            font-weight: bold;
-        }
-        .total-row-discount {
-            font-weight: bold;
-            color: #dc3545; /* สีแดงสำหรับคำว่า "ส่วนลด" */
         }
         .empty-cart-message {
             text-align: center;
@@ -155,38 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             
             <div class="card-body btn-submit-payment">
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <select class="form-select" name="payment_method" id="payment_method" required>
-                            <option value="" disabled selected>เลือกวิธีการชำระเงิน</option>
-                            <option value="cod">เก็บปลายทาง</option>
-                            <option value="qr">ชำระผ่านคิวอาร์โค้ด</option>
-                        </select>
-                    </div>
-
+                <form method="POST" action="qr_payment.php">
                     <button type="submit" class="btn btn-primary">ยืนยันการสั่งซื้อ</button>
                 </form>
             </div>
-
-            <?php if (isset($paymentMethod)): ?>
-                <div class="mt-5 payment-info">
-                    <?php if ($paymentMethod === 'qr'): ?>
-                        <h2>คิวอาร์โค้ดสำหรับการชำระเงิน</h2>
-                        <p>สแกนคิวอาร์โค้ดเพื่อทำการชำระเงิน:</p>
-                        <img src="qrcode.png" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
-                        <form method="POST" action="view_order.php">
-                            <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
-                            <button type="submit" class="btn btn-success">ชำระเสร็จสิ้น</button>
-                        </form>
-                    <?php elseif ($paymentMethod === 'cod'): ?>
-                        <h2>เก็บปลายทาง</h2>
-                        <p>สินค้าจะถูกส่งถึงคุณและชำระเงินเมื่อได้รับสินค้า</p>
-                    <?php endif; ?>
-                    <?php if ($orderId): ?>
-                        <p>หมายเลขออเดอร์: <strong><?php echo $orderId; ?></strong></p>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>
