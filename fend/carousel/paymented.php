@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $target_file)) {
             // บันทึกข้อมูลลงฐานข้อมูล
             $user_id = $_SESSION['user_id']; // รหัสผู้ใช้จากเซสชัน
-            $stmt = $conn->prepare("INSERT INTO payments (user_id, payment_image) VALUES (?, ?)");
+            $stmt = $conn->prepare("INSERT INTO payments (cr_id, payment_image) VALUES (?, ?)");
             $stmt->bind_param("is", $user_id, $target_file);
 
             if ($stmt->execute()) {
